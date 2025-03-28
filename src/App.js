@@ -16,7 +16,7 @@ export default function App() {
   useEffect(() => {
     fetch(`${BASE_URL}/api/gpu-list`,{
       headers: {
-        "API_KEY": process.env.REACT_APP_API_KEY
+        "X-API-Key": API_KEY
       }
     })
       .then((res) => res.json())

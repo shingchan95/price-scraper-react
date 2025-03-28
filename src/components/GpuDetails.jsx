@@ -23,7 +23,7 @@ export default function GpuDetails({ gpu, onBack }) {
   useEffect(() => {
     fetch(`${BASE_URL}/api/gpu-prices?gpu=${encodeURIComponent(gpu)}`,{
       headers: {
-        "API_KEY": API_KEY
+        "X-API-Key": API_KEY
       }
     })
       .then((res) => res.json())
