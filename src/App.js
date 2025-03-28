@@ -6,7 +6,6 @@ import DarkModeToggle from "./components/DarkModeToggle";
 
 export default function App() {
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-  const API_KEY = process.env.API_KEY;
   const [gpus, setGpus] = useState([]);
   const [selectedGpu, setSelectedGpu] = useState(null);
   const [search, setSearch] = useState("");         
@@ -14,11 +13,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch(`${BASE_URL}/api/gpu-list`,{
-      headers: {
-        "X-API-Key": API_KEY
-      }
-    })
+    fetch(`${BASE_URL}/api/gpu-list`)
       .then((res) => res.json())
       .then((data) => setGpus(data));
   }, []);

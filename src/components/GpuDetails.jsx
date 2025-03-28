@@ -14,18 +14,13 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, 
 
 export default function GpuDetails({ gpu, onBack }) {
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-  const API_KEY = process.env.API_KEY;
   const [data, setData] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.classList.contains("dark")
   );
 
   useEffect(() => {
-    fetch(`${BASE_URL}/api/gpu-prices?gpu=${encodeURIComponent(gpu)}`,{
-      headers: {
-        "X-API-Key": API_KEY
-      }
-    })
+    fetch(`${BASE_URL}/api/gpu-prices?gpu=${encodeURIComponent(gpu)}`)
       .then((res) => res.json())
       .then(setData);
   }, [gpu]);
