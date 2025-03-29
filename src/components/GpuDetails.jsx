@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import Loading from "./Loading";
+
 import {
   Chart as ChartJS,
   LineElement,
@@ -13,16 +15,22 @@ import {
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Tooltip);
 
 export default function GpuDetails({ gpu, onBack }) {
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.classList.contains("dark")
   );
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${BASE_URL}/api/gpu-prices?gpu=${encodeURIComponent(gpu)}`)
       .then((res) => res.json())
-      .then(setData);
+      .then((result) => {
+        setData(result);
+        setLoading(false);
+      });
   }, [gpu]);
 
   // Track dark mode changes
@@ -38,9 +46,18 @@ export default function GpuDetails({ gpu, onBack }) {
     return () => observer.disconnect();
   }, []);
 
-  if (!data.length) return null;
+  if (loading) return <Loading />;
+  if (!data.length)
+    return (
+      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+        No data found for this GPU.
+      </div>
+    );
+
   const latest = data[data.length - 1];
-  const profit = (latest.buy_price - Math.max(latest.sell_cash || 0, latest.sell_store || 0)).toFixed(2);
+  const profit = (
+    latest.buy_price - Math.max(latest.sell_cash || 0, latest.sell_store || 0)
+  ).toFixed(2);
 
   return (
     <section className="transition-colors">

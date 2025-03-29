@@ -3,6 +3,7 @@ import Overview from "./components/Overview";
 import GpuSearch from "./components/GpuSearch";
 import GpuDetails from "./components/GpuDetails";
 import DarkModeToggle from "./components/DarkModeToggle";
+import Loading from "./components/Loading";
 
 export default function App() {
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -11,11 +12,13 @@ export default function App() {
   const [search, setSearch] = useState("");         
   const [sortOption, setSortOption] = useState("name"); 
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/gpu-list`)
       .then((res) => res.json())
-      .then((data) => setGpus(data));
+      .then((data) => setGpus(data))
+      .finally(() => setLoading(false)); 
   }, []);
 
   return (
@@ -31,21 +34,28 @@ export default function App() {
       </div>
       </header>
 
-      {!selectedGpu && (
-        <>
-          <Overview total={gpus.length} />
-          <GpuSearch
-            gpus={gpus}
-            onSelect={setSelectedGpu}
-            search={search}
-            setSearch={setSearch}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-            currentPage={currentPage}           
-            setCurrentPage={setCurrentPage}
-          />
-        </>
-      )}
+    {!selectedGpu && (
+      <>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <Overview total={gpus.length} />
+            <GpuSearch
+              gpus={gpus}
+              onSelect={setSelectedGpu}
+              search={search}
+              setSearch={setSearch}
+              sortOption={sortOption}
+              setSortOption={setSortOption}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </>
+        )}
+      </>
+    )}
+
 
       {selectedGpu && (
         <GpuDetails
