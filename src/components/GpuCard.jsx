@@ -4,10 +4,10 @@ export default function GpuCard({ gpu, onSelect }) {
 const fallbackImage =
     "https://uk.static.webuy.com/product_images/Computing/Graphics Cards - PCI-E/SGRAACEA77016G01_m.jpg";
 
-    const isPriceChangeValid = typeof gpu.change === "number" && !isNaN(gpu.change);
-    const priceChange = isPriceChangeValid ? gpu.change.toFixed(2) : "0.00";
-    const changeColor =
-        gpu.change > 0 ? "text-green-600" : gpu.change < 0 ? "text-red-600" : "text-gray-400";
+    // const isPriceChangeValid = typeof gpu.change === "number" && !isNaN(gpu.change);
+    // const priceChange = isPriceChangeValid ? gpu.change.toFixed(2) : "0.00";
+    // const changeColor =
+    //     gpu.change > 0 ? "text-green-600" : gpu.change < 0 ? "text-red-600" : "text-gray-400";
         
 
     return (
@@ -23,13 +23,13 @@ const fallbackImage =
             <p>💷 Buy: £{gpu.current_buy_price ?? "-"}</p>
             <p>🏪 Store Credit: £{gpu.current_sell_store ?? "-"}</p>
             <p>💵 Cash: £{gpu.current_sell_cash ?? "-"}</p>
-            <p>
+            {/* <p>
             📉 Change Since First Price:{" "}
             <span className={changeColor}>
                 {gpu.change > 0 ? "+" : ""}
                 £{priceChange}
             </span>
-            </p>
+            </p> */}
             {gpu.online_stock_status && (
             <p>
                 🌐 Online: {gpu.online_stock_status} ({gpu.online_stock_count ?? 0})
