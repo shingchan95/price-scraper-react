@@ -1,34 +1,39 @@
+import React from "react";
+import GpuCard from "./GpuCard";
+
 export default function GpuSearch({
-    gpus,
-    onSelect,
-    search,
-    setSearch,
-    sortOption,
-    setSortOption,
-    currentPage,
-    setCurrentPage
-  }) {
-
+  gpus,
+  onSelect,
+  search,
+  setSearch,
+  sortOption,
+  setSortOption,
+  currentPage,
+  setCurrentPage
+}) {
   const itemsPerPage = 12;
-
   const filtered = gpus.filter((g) =>
     g.gpu_name.toLowerCase().includes(search.toLowerCase())
   );
 
+
   const sorted = [...filtered].sort((a, b) => {
+
     switch (sortOption) {
-      case "drop":
-        return a.change - b.change;
-      case "gain":
-        return b.change - a.change;
+      // case "drop":
+      //   return a.change - b.change;
+      // case "gain":
+      //   return b.change - a.change;
       case "highest":
-        return b.last_price - a.last_price;
+        return b.current_buy_price - a.current_buy_price;
       case "lowest":
-        return a.last_price - b.last_price;
+        return a.current_buy_price - b.current_buy_price;
       default:
         return a.gpu_name.localeCompare(b.gpu_name);
     }
   });
+  
+  
 
   const totalPages = Math.ceil(sorted.length / itemsPerPage);
   const currentGpus = sorted.slice(
@@ -63,8 +68,8 @@ export default function GpuSearch({
           }}
         >
           <option value="name">Sort by Name</option>
-          <option value="drop">Sort by Price Drop (▼)</option>
-          <option value="gain">Sort by Price Gain (▲)</option>
+          {/* <option value="drop">Sort by Price Drop (▼)</option>
+          <option value="gain">Sort by Price Gain (▲)</option> */}
           <option value="highest">Sort by Highest Price (£)</option>
           <option value="lowest">Sort by Lowest Price (£)</option>
         </select>
@@ -72,30 +77,9 @@ export default function GpuSearch({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {currentGpus.map((gpu) => (
-            <div
-            key={gpu.gpu_name}
-            className="bg-white dark:bg-gray-800 dark:text-white p-4 rounded shadow cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 flex flex-col justify-between min-h-[200px]"
-
-            
-            onClick={() => onSelect(gpu.gpu_name)}
-            >
-            <div className="mb-2">
-                <p className="font-semibold break-words">{gpu.gpu_name}</p>
-
-                <p className={`text-sm ${gpu.change > 0 ? "text-green-600" : "text-red-600"}`}>
-                {gpu.change > 0 ? "+" : ""}
-                {gpu.change.toFixed(2)} change
-                </p>
-            </div>
-
-            <div className="text-sm mt-auto space-y-1">
-                <p>💷 Buy: £{gpu.last_buy_price ?? "-"}</p>
-                <p>🏪 Store Credit: £{gpu.sell_store ?? "-"}</p>
-                <p>💵 Cash: £{gpu.sell_cash ?? "-"}</p>
-            </div>
-            </div>
+          <GpuCard key={gpu.gpu_name} gpu={gpu} onSelect={onSelect} />
         ))}
-        </div>
+      </div>
 
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-4 flex-wrap">
