@@ -40,7 +40,6 @@ export default function GpuSearch({
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
@@ -77,7 +76,7 @@ export default function GpuSearch({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {currentGpus.map((gpu) => (
-          <GpuCard key={gpu.gpu_name} gpu={gpu} onSelect={onSelect} />
+          <GpuCard key={gpu.id} gpu={gpu} onSelect={onSelect} />
         ))}
       </div>
 
