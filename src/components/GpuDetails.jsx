@@ -99,7 +99,7 @@ export default function GpuDetails({ gpu, onBack }) {
           <p><strong>Current Price:</strong> £{latest.buy_price}</p>
           <p><strong>Sell to Store:</strong> £{latest.sell_store ?? '-'}</p>
           <p><strong>Sell for Cash:</strong> £{latest.sell_cash ?? '-'}</p>
-          <p><strong>Historical Change:</strong> £{priceChange.toFixed(2)}</p>
+          {/* <p><strong>Historical Change:</strong> £{priceChange.toFixed(2)}</p> */}
           <p><strong>Online Stock:</strong> {gpu.online_stock_status} ({gpu.online_stock_count ?? 0})</p>
           <p><strong>Store Stock:</strong> {gpu.store_stock_status}</p>
           <p><strong>Rating:</strong> {gpu.rating ?? "N/A"}</p>

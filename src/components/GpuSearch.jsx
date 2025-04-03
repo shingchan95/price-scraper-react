@@ -18,16 +18,34 @@ export default function GpuSearch({
 
 
   const sorted = [...filtered].sort((a, b) => {
-
+    const safeDiff = (curr, hist) => {
+      if (curr == null || hist == null) return 0;
+      return curr - hist;
+    };
+    
     switch (sortOption) {
-      // case "drop":
-      //   return a.change - b.change;
-      // case "gain":
-      //   return b.change - a.change;
       case "highest":
         return b.current_buy_price - a.current_buy_price;
       case "lowest":
         return a.current_buy_price - b.current_buy_price;
+      case "buy_gain_highest":
+        return safeDiff(b.current_buy_price, b.historic_buy_price) -
+                safeDiff(a.current_buy_price, a.historic_buy_price);
+      case "buy_gain_lowest":
+        return safeDiff(a.current_buy_price, a.historic_buy_price) -
+                safeDiff(b.current_buy_price, b.historic_buy_price);
+      case "sell_cash_gain_highest":
+        return safeDiff(b.current_sell_cash, b.historic_sell_cash) -
+                safeDiff(a.current_sell_cash, a.historic_sell_cash);
+      case "sell_cash_gain_lowest":
+        return safeDiff(a.current_sell_cash, a.historic_sell_cash) -
+                safeDiff(b.current_sell_cash, b.historic_sell_cash);
+      case "sell_store_gain_highest":
+        return safeDiff(b.current_sell_store, b.historic_sell_store) -
+                safeDiff(a.current_sell_store, a.historic_sell_store);
+      case "sell_store_gain_lowest":
+        return safeDiff(a.current_sell_store, a.historic_sell_store) -
+                safeDiff(b.current_sell_store, b.historic_sell_store);
       default:
         return a.gpu_name.localeCompare(b.gpu_name);
     }
@@ -67,10 +85,14 @@ export default function GpuSearch({
           }}
         >
           <option value="name">Sort by Name</option>
-          {/* <option value="drop">Sort by Price Drop (▼)</option>
-          <option value="gain">Sort by Price Gain (▲)</option> */}
           <option value="highest">Sort by Highest Price (£)</option>
           <option value="lowest">Sort by Lowest Price (£)</option>
+          <option value="buy_gain_highest">Buy Price ↑</option>
+          <option value="buy_gain_lowest">Buy Price ↓</option>
+          <option value="sell_cash_gain_highest">Cash Sell ↑</option>
+          <option value="sell_cash_gain_lowest">Cash Sell ↓</option>
+          <option value="sell_store_gain_highest">Store Credit ↑</option>
+          <option value="sell_store_gain_lowest">Store Credit ↓</option>
         </select>
       </div>
 
